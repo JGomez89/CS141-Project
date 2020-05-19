@@ -1,16 +1,17 @@
 import numpy as np
 from PIL import Image
+from Huffman import huffman_alg
 
-img = Image.open('../images/plains.jpeg')
-array = np.array(img)
-print(array.shape)      # (170, 256, 3)
-img = Image.fromarray(array)
-print(array)
-img.save('../images/export/testrgb.jpeg')
+
 
 
 # Take string or image as input
+
     # Create array representation of rgb_image
+# img = Image.open('../images/mountains.jpg')
+# img_array = np.array(img)
+# print(img_array.shape)      # (170, 256, 3)
+
 
 ## Image -> Binary
 # Hash similar valued pixels to same color (decrease resolution)
@@ -18,6 +19,8 @@ img.save('../images/export/testrgb.jpeg')
     # (or) make 3x3 pixel set be represented by the middle pixel
 
 # Huffman Algorithm
+
+
     # Make frequency dictionary
     # Make heap
     # Merge Nodes and build tree
@@ -30,3 +33,6 @@ img.save('../images/export/testrgb.jpeg')
 
 
 ## Binary-> Image
+# img = Image.fromarray(img_array)
+# print(img_array)
+# img.save('../images/export/testrgb.jpg')
