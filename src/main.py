@@ -1,15 +1,17 @@
 import numpy as np
 from PIL import Image
-from Huffman import Huffman
+from HuffmanCoding import Huffman
 
 
 def main():
+    path = '../images/mountains.jpg'
+    h = Huffman(path)
 
-    input_path = '../images/mountains.jpg'
-    h = huffman_alg(userPath)
+    # Compression
     output_path = h.compress()
 
-    img = Image.fromarray(img_array)
-    img.save('../images/export/testrgb.jpg')
+    # Decompression
+    h.decompress(output_path)
+
 
 main()

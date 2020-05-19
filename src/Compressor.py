@@ -28,11 +28,17 @@ from Huffman import huffman_alg
     # Encode pixels
     # Pad encodded text
     # Make byte array
+    # Create mapping of Huffman tree ("dictionary") append to front of byte array
+
+
 # Output the byte array to binary file
     # Maybe: show improvement by comparing it to a naive conversion from image to binary
 
 
 ## Binary-> Image
+# Read in mapping
+# decode
+
 # img = Image.fromarray(img_array)
 # print(img_array)
 # img.save('../images/export/testrgb.jpg')
