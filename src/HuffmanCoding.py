@@ -3,28 +3,6 @@ from PIL import Image
 import heapq
 import os
 
-from hashlib import sha1
-from numpy import all, array, uint8
-
-
-class hashable(object):
-    def __init__(self, wrapped, tight=False):
-        self.__tight = tight
-        self.__wrapped = array(wrapped) if tight else wrapped
-        self.__hash = int(sha1(wrapped.view(uint8)).hexdigest(), 16)
-
-    def __eq__(self, other):
-        return all(self.__wrapped == other.__wrapped)
-
-    def __hash__(self):
-        return self.__hash
-
-    def unwrap(self):
-        if self.__tight:
-            return array(self.__wrapped)
-
-        return self.__wrapped
-
 
 
 class HeapNode:
@@ -157,13 +135,13 @@ class Huffman:
             for j in range(0,self.colomns):
                 rgb_val = pixels[j]
 
-                key = hashable(rgb_val)
+                key = (rgb_val[0],rgb_val[1],rgb_val[2])
                 if key not in frequency:
                     frequency[key] = 0
 
                 frequency[key] += 1
 
-        # print(len(frequency))
+        print(len(frequency))
 
         return frequency
 
