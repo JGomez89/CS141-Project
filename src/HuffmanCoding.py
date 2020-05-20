@@ -3,6 +3,30 @@ from PIL import Image
 import heapq
 import os
 
+from hashlib import sha1
+from numpy import all, array, uint8
+
+
+class hashable(object):
+    def __init__(self, wrapped, tight=False):
+        self.__tight = tight
+        self.__wrapped = array(wrapped) if tight else wrapped
+        self.__hash = int(sha1(wrapped.view(uint8)).hexdigest(), 16)
+
+    def __eq__(self, other):
+        return all(self.__wrapped == other.__wrapped)
+
+    def __hash__(self):
+        return self.__hash
+
+    def unwrap(self):
+        if self.__tight:
+            return array(self.__wrapped)
+
+        return self.__wrapped
+
+
+
 class HeapNode:
 
     # Object constructor
@@ -39,6 +63,10 @@ class Huffman:
         # Shape of rgb image is (rows,colomns,3)
         self.rows = self.img_array.shape[0]
         self.colomns = self.img_array.shape[1]
+        if (self.img_array.shape[2] != 3):
+            print(self.img_array.shape)
+            print('File is not an acceptable rgb image.')
+            exit(0)
 
         # Structures
         self.heap = []
@@ -50,6 +78,7 @@ class Huffman:
     ## Functions for running tests
     def test_img(self,filename):
         self.degredation()
+        self.fill_freq_dict()
         img = Image.fromarray(self.img_array)
         if filename.endswith('.jpg'):
             new_filename = filename[:len(filename)-4]+'_degredated.jpg'
@@ -67,8 +96,8 @@ class Huffman:
 
         # Precision variables
         # (MAYBE: make precision variables a function of the size of the image)
-        reso_size = 4
-        num_diff_vals = 50
+        reso_size = 10
+        num_diff_vals = 10
 
 
         total_num_colors = num_diff_vals^3
@@ -92,12 +121,13 @@ class Huffman:
 
                 avgRGB = [avgRed,avgGreen,avgBlue]
                 avgRGB[:] = [int(x) - int(x)%prec_size for x in avgRGB]
+                # print(avgRGB,i,j)
 
                 for l in range(i,i+reso_size):
                     self.img_array[l][j] = avgRGB
 
-        # If any rows are left at bottom of image, then continue
-        if (not remaining_rows == 0):
+        # If any rows are left at bottom of image, then finish
+        if (remaining_rows != 0):
 
             for j in range(0,self.colomns):
                 valRed = np.array([self.img_array[k][j][0] for k in range(i,self.rows)])
@@ -118,28 +148,22 @@ class Huffman:
 
 
 
-    def fill_freq_dict(self,):
-        # an_array = np.array([[1,2],[3,4]])
-        # another_array = np.array([[1,2],[3,4]])
-        #
-        # comparison = an_array == another_array
-        # equal_arrays = comparison.all()
-        #
-        # print(equal_arrays)
-        # OUTPUT
-        # True
-
+    def fill_freq_dict(self):
         frequency = {}
 
-        for line in self.img_array:
+        for i in range(0,self.rows):
+            pixels = self.img_array[i]
 
-            pixels = self.img_array[line]
-            for rgb_val in pixles:
+            for j in range(0,self.colomns):
+                rgb_val = pixels[j]
 
-                if not rgb_val in pixles:
-                    frequency[rgb_vals] = 0
+                key = hashable(rgb_val)
+                if key not in frequency:
+                    frequency[key] = 0
 
-                frequency[rgb_val] += 1
+                frequency[key] += 1
+
+        # print(len(frequency))
 
         return frequency
 
@@ -167,6 +191,4 @@ class Huffman:
     ## Decompression
 
     def decompress(self,path):
-        # img = Image.fromarray(self.img_array)
-        # img.save('../images/export/testrgb.jpg')
             pass
