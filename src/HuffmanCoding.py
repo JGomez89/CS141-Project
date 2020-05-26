@@ -13,6 +13,7 @@ class HeapNode:
         # Object variables
         # self.rgb_vals = np.asarray(rgb_vals)
         self.rgb_vals = rgb_vals
+
         self.freq = freq
         self.left = None
         self.right = None
@@ -23,10 +24,10 @@ class HeapNode:
             if(other == None):
                 return -1
             if(not isinstance(other,HeapNode)):
+
                 return -1
             else:
                 return self.freq > other.freq
-
 
 
 
