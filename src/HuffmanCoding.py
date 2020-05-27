@@ -13,7 +13,6 @@ class HeapNode:
         # Object variables
         # self.rgb_vals = np.asarray(rgb_vals)
         self.rgb_vals = rgb_vals
-
         self.freq = freq
         self.left = None
         self.right = None
@@ -24,7 +23,6 @@ class HeapNode:
             if(other == None):
                 return -1
             if(not isinstance(other,HeapNode)):
-
                 return -1
             else:
                 return self.freq > other.freq
@@ -59,14 +57,13 @@ class Huffman:
     def test_img(self,filename):
 
 
-        self.degredation()
-        freq = self.fill_freq_dict()
-        self.make_heap(freq)
-        self.merge_nodes()
-        self.create_codebook()
-        self.create_code()
+        self.compress()
 
-        print 'Number of colors in image:',len(freq)
+        root = self.decode_codebook()
+        self.print_tree(root)
+                
+
+        # print 'Number of colors in image:',len(freq)
 
         img = Image.fromarray(self.img_array)
         if filename.endswith('.jpg'):
@@ -74,6 +71,29 @@ class Huffman:
             img.save('../images/export/' + new_filename)
         else:
             img.save('../images/export/testrgb.jpg')
+
+
+    def print_tree(self,root,code=''):
+
+        if(isinstance(root.left,HeapNode) or isinstance(root.right,HeapNode)):
+
+            leftChild = root.left
+            rightChild = root.right
+
+            if(root.left != None):
+                code1 = code +'0'
+                self.print_tree(leftChild,code1)
+
+            if(root.right != None):
+                code2 = code + '1'
+                self.print_tree(rightChild,code2)
+
+            return
+
+        print ('Reached rgb_val: ', root.rgb_vals)
+        print(code)
+
+
 
 
 
@@ -135,6 +155,7 @@ class Huffman:
                     self.img_array[l][j] = avgRGB
 
 
+
     def fill_freq_dict(self):
 
         frequency = {}
@@ -179,6 +200,7 @@ class Huffman:
     def create_codebook(self):
             pass
 
+
     def create_code(self):
             pass
 
@@ -192,13 +214,51 @@ class Huffman:
 
 
 
+
+
+
     ## Decompression
 
     def decode_codebook(self):
-            pass
+        root = HeapNode(None,None)
+
+        # Read from txtFile file to get code and rgb_vals
+        #Testing
+        codes = ('0110100','0110101','000','001')
+        rgb_vals = ((15,100,200),(135,20,0),(45,45,45),(0,0,100))
+
+        self.tree_insert(root,codes[0],0,rgb_vals[0])
+        self.tree_insert(root,codes[1],0,rgb_vals[1])
+        self.tree_insert(root,codes[2],0,rgb_vals[2])
+        self.tree_insert(root,codes[3],0,rgb_vals[3])
+
+        return root
+
+
+
+    def tree_insert(self,root,code,index,rgb_vals):
+        if (len(code) == index):
+            root.rgb_vals = rgb_vals
+
+        else:
+            if(code[index] == '0'):
+                if(not isinstance(root.left,HeapNode)):
+                    root.left = HeapNode(None,None)
+
+                self.tree_insert(root.left,code,index+1,rgb_vals)
+
+
+            elif(code[index] == '1'):
+                if(not isinstance(root.right,HeapNode)):
+                    root.right = HeapNode(None,None)
+
+                self.tree_insert(root.right,code,index+1,rgb_vals)
+
+
 
     def decode_binary(self):
             pass
 
-    def decompress(self,path):
-            pass
+    def decompress(self):
+        root = self.decode_codebook()
+        self.print_tree(root)
