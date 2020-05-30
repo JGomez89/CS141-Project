@@ -211,7 +211,8 @@ class Huffman:
         ##          [size of codebook][codebook][# of columns][encoded img]
 
         # Create first half of .bin file
-        self.create_codebook()
+        code_dict = fill_code_dict(self)
+        self.create_codebook(code_dict)
 
 
         # Create second half of .bin file
@@ -225,7 +226,11 @@ class Huffman:
         return output_path
 
 
-    def create_codebook(self):
+    def fill_code_dict(self):
+            pass
+
+
+    def create_codebook(self,code_dict):
             pass
 
 
