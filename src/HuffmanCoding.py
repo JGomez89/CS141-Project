@@ -191,14 +191,14 @@ class Huffman:
 
     def merge_nodes(self):
         while(len(self.heap)>1):
-			node1 = heapq.heappop(self.heap)
-			node2 = heapq.heappop(self.heap)
+		node1 = heapq.heappop(self.heap)
+		node2 = heapq.heappop(self.heap)
 
-			merged = HeapNode(node1.freq + node2.freq, None)
-			merged.left = node1
-			merged.right = node2
+		merged = HeapNode(node1.freq + node2.freq, None)
+		merged.left = node1
+		merged.right = node2
 
-			heapq.heappush(self.heap, merged)
+		heapq.heappush(self.heap, merged)
 
 
 
