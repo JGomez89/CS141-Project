@@ -159,7 +159,7 @@ class Huffman:
 
     def create_huffman_tree(self):
         freq_dict = self.fill_freq_dict()
-        self.make_heap(fred_dict)
+        self.make_heap(freq_dict)
         self.merge_nodes()
 
 
@@ -219,6 +219,8 @@ class Huffman:
 
 
         # Save .bin file
+
+        output_path = ''
 
         return output_path
 
