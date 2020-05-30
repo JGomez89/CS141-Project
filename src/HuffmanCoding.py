@@ -61,7 +61,7 @@ class Huffman:
 
         root = self.decode_codebook()
         self.print_tree(root)
-                
+
 
         # print 'Number of colors in image:',len(freq)
 
@@ -74,6 +74,8 @@ class Huffman:
 
 
     def print_tree(self,root,code=''):
+
+        if(not isinstance(root,HeapNode)): return
 
         if(isinstance(root.left,HeapNode) or isinstance(root.right,HeapNode)):
 
@@ -155,6 +157,11 @@ class Huffman:
                     self.img_array[l][j] = avgRGB
 
 
+    def create_huffman_tree(self):
+        freq_dict = self.fill_freq_dict()
+        self.make_heap(fred_dict)
+        self.merge_nodes()
+
 
     def fill_freq_dict(self):
 
@@ -175,13 +182,11 @@ class Huffman:
         return frequency
 
 
-
     def make_heap(self, frequency):
 
         for key in frequency:
             node = HeapNode(frequency[key],key)
             heapq.heappush(self.heap, node)
-
 
 
     def merge_nodes(self):
@@ -197,6 +202,27 @@ class Huffman:
 
 
 
+
+    def create_binfile(self):
+        # Create new .bin file
+
+
+        ##      Schema:
+        ##          [size of codebook][codebook][# of columns][encoded img]
+
+        # Create first half of .bin file
+        self.create_codebook()
+
+
+        # Create second half of .bin file
+        self.create_code()
+
+
+        # Save .bin file
+
+        return output_path
+
+
     def create_codebook(self):
             pass
 
@@ -205,38 +231,41 @@ class Huffman:
             pass
 
 
+
     def compress(self):
         self.degredation()
-        self.make_heap(self.fill_freq_dict())
-        self.merge_nodes()
-        self.create_codebook()
-        self.create_code()
+        self.create_huffman_tree()
+        output_path = self.create_binfile()
 
+        return output_path
 
 
 
 
 
     ## Decompression
+    def decode_binfile(self):
+
+        # Decoding first then second half of the .bin file
+        self.decode_codebook()
+        self.decode_binary()
+
 
     def decode_codebook(self):
+            pass
+
+
+    def reconstruct_tree(self,codebook=None):
         root = HeapNode(None,None)
 
-        # Read from txtFile file to get code and rgb_vals
-        #Testing
-        codes = ('0110100','0110101','000','001')
-        rgb_vals = ((15,100,200),(135,20,0),(45,45,45),(0,0,100))
-
-        self.tree_insert(root,codes[0],0,rgb_vals[0])
-        self.tree_insert(root,codes[1],0,rgb_vals[1])
-        self.tree_insert(root,codes[2],0,rgb_vals[2])
-        self.tree_insert(root,codes[3],0,rgb_vals[3])
+        for key in codebook:
+            self.insert_leaf(root,key,0,codebook[key])
 
         return root
 
 
 
-    def tree_insert(self,root,code,index,rgb_vals):
+    def insert_leaf(self,root,code,index,rgb_vals):
         if (len(code) == index):
             root.rgb_vals = rgb_vals
 
@@ -245,14 +274,14 @@ class Huffman:
                 if(not isinstance(root.left,HeapNode)):
                     root.left = HeapNode(None,None)
 
-                self.tree_insert(root.left,code,index+1,rgb_vals)
+                self.insert_leaf(root.left,code,index+1,rgb_vals)
 
 
             elif(code[index] == '1'):
                 if(not isinstance(root.right,HeapNode)):
                     root.right = HeapNode(None,None)
 
-                self.tree_insert(root.right,code,index+1,rgb_vals)
+                self.insert_leaf(root.right,code,index+1,rgb_vals)
 
 
 
@@ -260,5 +289,4 @@ class Huffman:
             pass
 
     def decompress(self):
-        root = self.decode_codebook()
-        self.print_tree(root)
+            pass
