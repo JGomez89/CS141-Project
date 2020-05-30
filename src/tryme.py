@@ -8,7 +8,7 @@ def main():
     # Enter whatever .jpg file from images folder
     # Expect degredated image in exported
 
-    filename = 'plains.jpg'
+    filename = 'mountains.jpg'
 
     path = '../images/' + filename
     h = Huffman(path)
