@@ -175,6 +175,7 @@ class Huffman:
             merged.right = node2
             #push node to min heap
             heapq.heappush(self.heap, merged)
+            #remaining node in min heap is root of huffman tree
 
 
 
