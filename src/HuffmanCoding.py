@@ -90,6 +90,7 @@ class Huffman:
         self.make_heap(freq)
         self.merge_nodes()
         self.create_codebook()
+        #print(self.encoded) #uncomment to print codebook (test)
         self.create_code()
 
         print('Number of colors in image:',len(freq))
