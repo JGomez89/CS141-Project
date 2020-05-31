@@ -47,8 +47,8 @@ class Huffman:
             exit(0)
 
         #structures
-        self.heap = []
-        self.encodded = {}
+        self.heap = [] #store huffman tree
+        self.encoded = {} #dictionary of huffman codes (codebook?)
 
 
 
@@ -178,12 +178,29 @@ class Huffman:
             #remaining node in min heap is root of huffman tree
 
 
-
+    
     def create_codebook(self):
-            pass
+        root = heapq.heappop(self.heap) #assign root to root node of huffman tree
+        curr_code = "" #stores current code as huffman tree is traversed
+        self.create_codebook_helper(root,curr_code) #occupy codebook w huffman codes
+
+
+
+    def create_codebook_helper(self,root,curr_code):
+        if root == None:
+            return
+
+        if root.rgb_vals != None: #leaf node - save code to cookbook
+            self.encoded[root.rgb_vals] = curr_code
+            return
+
+        self.create_codebook_helper(root.left,curr_code + "0") #internal node - append 0 and traverse left
+        self.create_codebook_helper(root.right,curr_code + "1") #internal node - append 1 and traverse right
+
 
     def create_code(self):
-            pass
+
+        pass
 
 
     def compress(self):
