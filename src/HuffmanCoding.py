@@ -226,10 +226,13 @@ class Huffman:
         self.create_codebook_helper(root.left,curr_code + "0") #internal node - append 0 and traverse left
         self.create_codebook_helper(root.right,curr_code + "1") #internal node - append 1 and traverse right
 
-
+    #iterate through array and translate each (r,g,b) to huffman code 
     def create_code(self):
-
-        pass
+        for row in range(0,self.rows):
+            for column in range(0,self.columns):
+                curr_pixel = self.img_array[row,column]
+                key = (curr_pixel[0],curr_pixel[1],curr_pixel[2])
+                print(self.encoded[key], end=" ")
 
 
     def compress(self):
