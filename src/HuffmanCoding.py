@@ -7,19 +7,17 @@ import os
 
 class HeapNode:
 
-    # Object constructor
+    #constructor
     def __init__(self, freq, rgb_vals):
 
-        # Object variables
-        # self.rgb_vals = np.asarray(rgb_vals)
-        self.rgb_vals = rgb_vals
+        self.rgb_vals = rgb_vals # self.rgb_vals = np.asarray(rgb_vals)
 
         self.freq = freq
         self.left = None
         self.right = None
 
 
-    # Public functions
+    #public functions
     def __cmp__(self, other):
             if(other == None):
                 return -1
@@ -34,13 +32,13 @@ class HeapNode:
 
 class Huffman:
 
-    # Constructor
+    #constructor
     def __init__(self,path):
 
         self.path = path
-        self.img_array = np.array(Image.open(self.path))
+        self.img_array = np.array(Image.open(self.path)) #read image from path, convert to numpy array
 
-        # Shape of rgb image is (rows,columns,3)
+        #shape of rgb image is (rows,columns,3)
         self.rows = self.img_array.shape[0]
         self.columns = self.img_array.shape[1]
         if (self.img_array.shape[2] != 3):
@@ -48,7 +46,7 @@ class Huffman:
             print('File is not an acceptable rgb image.')
             exit(0)
 
-        # Structures
+        #structures
         self.heap = []
         self.encodded = {}
 
@@ -66,7 +64,7 @@ class Huffman:
         self.create_codebook()
         self.create_code()
 
-        print 'Number of colors in image:',len(freq)
+        print('Number of colors in image:',len(freq))
 
         img = Image.fromarray(self.img_array)
         if filename.endswith('.jpg'):
@@ -80,12 +78,12 @@ class Huffman:
 
     ## Compression functions
 
-    # Increase the frequency of colors / image loss
+    #increase frequency of colors, results in image loss
     def degredation(self):
 
         # Precision variables
         # (MAYBE: make precision variables a function of the size of the image)
-        reso_size = self.rows/120
+        reso_size = int(self.rows/120)
         num_diff_vals = 10
 
 
@@ -135,9 +133,10 @@ class Huffman:
                     self.img_array[l][j] = avgRGB
 
 
+    #build dictionary of pixel frequencies from image
     def fill_freq_dict(self):
 
-        frequency = {}
+        frequency = {} #dictionary of pixel frequencies
 
         for i in range(0,self.rows):
             pixels = self.img_array[i]
@@ -145,7 +144,7 @@ class Huffman:
             for j in range(0,self.columns):
                 rgb_val = pixels[j]
 
-                key = (rgb_val[0],rgb_val[1],rgb_val[2])
+                key = (rgb_val[0],rgb_val[1],rgb_val[2]) #key is a pixel (r,g,b)
                 if (key not in frequency):
                     frequency[key] = 0
 
@@ -157,22 +156,25 @@ class Huffman:
 
     def make_heap(self, frequency):
 
+        #create node for each pixel and push to min heap
         for key in frequency:
             node = HeapNode(frequency[key],key)
             heapq.heappush(self.heap, node)
 
 
-
+    #construct huffman tree
     def merge_nodes(self):
         while(len(self.heap)>1):
-			node1 = heapq.heappop(self.heap)
-			node2 = heapq.heappop(self.heap)
-
-			merged = HeapNode(node1.freq + node2.freq, None)
-			merged.left = node1
-			merged.right = node2
-
-			heapq.heappush(self.heap, merged)
+            #two nodes w smallest frequency (children)
+            node1 = heapq.heappop(self.heap)
+            node2 = heapq.heappop(self.heap)
+            #form parent node having frequency equal to sum of child frequencies
+            merged = HeapNode(node1.freq + node2.freq, None)
+            #attach child nodes to parent
+            merged.left = node1
+            merged.right = node2
+            #push node to min heap
+            heapq.heappush(self.heap, merged)
 
 
 
