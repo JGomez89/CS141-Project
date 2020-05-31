@@ -18,6 +18,8 @@ class HeapNode:
 
 
     #public functions
+
+    '''
     def __cmp__(self, other):
             if(other == None):
                 return -1
@@ -26,9 +28,35 @@ class HeapNode:
                 return -1
             else:
                 return self.freq > other.freq
+    '''
 
+    def __eq__(self,other):
+        return HeapNode.__check(other) and self.freq == other.freq
 
+    def __ne__(self,other):
+        return HeapNode.__check(other) and self.freq != other.freq
 
+    def __lt__(self,other):
+        return HeapNode.__check(other) and self.freq < other.freq
+
+    def __le__(self,other):
+        return HeapNode.__check(other) and self.freq <= other.freq
+
+    def __gt__(self,other):
+        return HeapNode.__check(other) and self.freq > other.freq
+
+    def __ge__(self,other):
+        return HeapNode.__check(other) and self.freq >= other.freq
+
+    @staticmethod
+    def __check(other):
+        if other is None:
+            return False
+        if not isinstance(other,HeapNode):
+            return False
+
+        return True
+            
 
 class Huffman:
 
@@ -180,7 +208,7 @@ class Huffman:
 
     
     def create_codebook(self):
-        root = heapq.heappop(self.heap) #assign root to root node of huffman tree
+        root = heapq.heappop(self.heap) #root node of huffman tree
         curr_code = "" #stores current code as huffman tree is traversed
         self.create_codebook_helper(root,curr_code) #occupy codebook w huffman codes
 
