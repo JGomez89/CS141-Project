@@ -260,7 +260,7 @@ class Huffman:
 
     def decode_codebook(self):
         # [uint] [(uint, uint, bits)...] = A (a1, a2, a3)...(n1,n2,n3)]
-        # where A is the number of total groupings/leaf nodes
+        # where A is the number of total groupings/leaf nodes 
             pass
 
 
@@ -298,12 +298,37 @@ class Huffman:
         # [uint] [bits] = B Img, where B is the number of columns
         # use reconstruct_tree to decode the binary encoding of the img
             pass
-
+    
+    
     def array_to_img(self):
-        # use decode_binary and convert into numpy array
-        # then turn the numpy array into an img
-            pass
+        # use decode_binary and convert into numpy array (decode_binary used in decompress())
+        # get the root node from huffman tree and the strings of 0s and 1s
+        # heapnode, string, int (rows)
+
+        bin_string = bin_numbers
+
+        for i in range(HeapNode(None,None), rows-rows_left, reso_size):
+
+            for j in range(0,columns):
+                
+                if (bin_string is a certain value)
+                    RGB_Red = np.fromstring(bin_string)
+                    
+                if (bin_string is a certain value)
+                    RGB_Green = np.fromstring(bin_string)
+
+                if (bin_string is a certain value)    
+                    RGB_Blue =  np.fromstring(bin_string)
+
+                    pix = [RGB_Red, RGB_Green, RGB_Blue]
+
+
+        #turn numpy array into an img
+        img = Image.fromarray(pix)
+        img.save('../images/export/reduced_quality.jpg')
+
 
     def decompress(self):
-            # put everything together
+            # self.decode_binfile()
+            # self.array_to_img()
             pass
