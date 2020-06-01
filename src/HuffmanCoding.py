@@ -226,17 +226,20 @@ class Huffman:
         self.create_codebook_helper(root.left,curr_code + "0") #internal node - append 0 and traverse left
         self.create_codebook_helper(root.right,curr_code + "1") #internal node - append 1 and traverse right
 
-    #iterate through array and translate each (r,g,b) to huffman code, save to file
+    #iterate through img_array and translate each (r,g,b) to huffman code, return final huffman encoding
     def create_code(self):
-        save_file = open("../images-compressed/encoding.txt",'w') #file to write encoding to
+        #save_file = open("../images-compressed/encoding.txt",'w') #file to write encoding to
+        curr_code = ""
         for row in range(0,self.rows):
             for column in range(0,self.columns):
                 curr_pixel = self.img_array[row,column]
                 key = (curr_pixel[0],curr_pixel[1],curr_pixel[2])
+                curr_code += self.encoded[key]
                 #print(self.encoded[key], end=" ")
-                save_file.write(self.encoded[key])
+                #save_file.write(self.encoded[key])
                 #save_file.write(' ')
-        save_file.close()
+        #save_file.close()
+        return curr_code
 
 
 
