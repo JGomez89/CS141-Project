@@ -100,7 +100,7 @@ class Huffman:
             new_filename = filename[:len(filename)-4]+'_degredated.jpg'
             img.save('../images/export/' + new_filename)
         else:
-            img.save('../images/export/testrgb.jpg')
+            img.save('../images/export/not-jpg.jpg')
 
 
 
@@ -228,14 +228,14 @@ class Huffman:
 
     #iterate through array and translate each (r,g,b) to huffman code, save to file
     def create_code(self):
-        save_file = open("../images-compressed/endoded.txt",'w') #file to write encoding to
+        save_file = open("../images-compressed/encoding.txt",'w') #file to write encoding to
         for row in range(0,self.rows):
             for column in range(0,self.columns):
                 curr_pixel = self.img_array[row,column]
                 key = (curr_pixel[0],curr_pixel[1],curr_pixel[2])
                 #print(self.encoded[key], end=" ")
                 save_file.write(self.encoded[key])
-                save_file.write(' ')
+                #save_file.write(' ')
         save_file.close()
 
 
